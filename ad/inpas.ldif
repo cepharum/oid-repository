@@ -1,0 +1,65 @@
+#
+# AD schema extension defining custom attributes for use with INPAS services
+# maintained and distributed by Hör GmbH in cooperation with cepharum GmbH.
+#
+# NOTE!
+#
+# This is a template, only! Replace %%BASE_DN%% with your setup's rDN before
+# applying. Your setup's rDN is usually related to your domain name, e.g.
+#
+#     DC=samdom,DC=cepharum,DC=de
+#
+# when running AD domain
+#
+#     SAMDOM.CEPHARUM.DE
+#
+#
+# Syntax descriptions:
+#
+# technical spec: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/d2435927-0999-4c62-8c6d-13ba31a52e1a
+# attributes A-L: https://docs.microsoft.com/en-us/openspecs/windows_protocols/MS-ADA1/19528560-f41e-4623-a406-dabcfff0660f
+# attributes   M: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-ada2/e20ebc4e-5285-40ba-b3bd-ffcb81c2783e
+# attributes N-Z: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-ada3/4517e835-3ee6-44d4-bb95-a94b6966bfb0
+#
+# optional: https://docs.microsoft.com/de-de/windows/win32/adschema/active-directory-schema?redirectedfrom=MSDN
+#
+# additional:
+# - https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/ccd55373-2fa6-4237-9f66-0d90fbd866f5
+#
+
+dn: CN=inpasCardId,CN=Schema,CN=Configuration,%%BASE_DN%%
+objectClass: top
+objectClass: attributeSchema
+attributeId: 1.3.6.1.4.1.22606.2.2.1
+cn: inpasCardId
+name: inpasCardId
+lDAPDisplayName: inpasCardId
+description: numeric ID of card associated with INPAS user
+attributeSyntax: 2.5.5.16
+oMSyntax: 65
+
+dn: CN=inpasCustomPIN,CN=Schema,CN=Configuration,%%BASE_DN%%
+objectClass: top
+objectClass: attributeSchema
+attributeId: 1.3.6.1.4.1.22606.2.2.2
+cn: inpasCustomPIN
+name: inpasCustomPIN
+lDAPDisplayName: inpasCustomPIN
+description: separate PIN - hashed or in clear text - used for authenticating with INPAS services, only
+attributeSyntax: 2.5.5.12
+oMSyntax: 64
+isSingleValued: TRUE
+
+dn: CN=inpas,CN=Schema,CN=Configuration,%%BASE_DN%%
+objectClass: top
+objectClass: classSchema
+governsID: 1.3.6.1.4.1.22606.2.1.1
+cn: inpas
+name: inpas
+lDAPDisplayName: inpas
+subClassOf: top
+objectClassCategory: 3
+description: INPAS-related information
+mayContain: inpasCardId
+mayContain: inpasCustomPIN
+defaultObjectCategory: CN=inpas,CN=Schema,CN=Configuration,%%BASE_DN%%
