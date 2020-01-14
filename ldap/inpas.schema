@@ -11,10 +11,10 @@ attributetype ( 1.3.6.1.4.1.22606.2.2.1
 
 attributetype ( 1.3.6.1.4.1.22606.2.2.2
 	NAME 'inpasCustomPIN'
-	DESC 'separate PIN used for authenticating with INPAS services, only'
+	DESC 'separate PIN - hashed or in clear text - used for authenticating with INPAS services, only'
 	EQUALITY caseExactMatch
 	SUBSTR caseExactSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
 	SINGLE-VALUE )
 
 
