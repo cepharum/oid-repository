@@ -1,0 +1,22 @@
+#
+# LDAP schema defining custom object classes and attributes for use with hosting
+# services of cepharum GmbH, formerly toxA.
+#
+dn: cn=toxa,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: toxa
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.3 NAME 'knownMailDomain' DESC 'mail domain(s) known and handled' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.4 NAME 'mailPublic' DESC 'public mail address(es)' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.5 NAME 'mailTo' DESC 'internal account name or forwarding mail address or any combination of these' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.6 NAME 'accountLocked' DESC 'set to lock account' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 SINGLE-VALUE )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.10 NAME 'toxaInternalId' DESC 'customer/partner identity code' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 SINGLE-VALUE )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.11 NAME 'toxaAgentId' DESC 'identity code of partner being representative to this customer' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 SINGLE-VALUE )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.1.2.12 NAME 'accountType' DESC 'type of customer/partner account affecting available services' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.10 NAME 'toxaAccount' DESC 'basic account' SUP top STRUCTURAL MUST ( uid $ userPassword ) MAY ( o $ cn $ sn $ givenName $ accountLocked $ accountType ) )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.11 NAME 'toxaCustomer' DESC 'customer' SUP top AUXILIARY MUST toxaInternalId MAY toxaAgentId )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.12 NAME 'toxaMailAccount' DESC 'mailbox account' SUP top AUXILIARY MUST ( uid $ userPassword $ mailPublic ) MAY ( knownMailDomain $ accountLocked ) )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.13 NAME 'toxaMailForward' DESC 'mail forward entry' SUP top AUXILIARY MUST ( mailPublic $ mailTo ) MAY knownMailDomain )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.14 NAME 'toxaMailForwardOnly' DESC 'mail forward only (without any account)' SUP top STRUCTURAL MUST ( mailPublic $ mailTo ) MAY knownMailDomain )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.15 NAME 'toxaDavAccount' DESC 'WebDAV account' SUP top AUXILIARY MUST ( uid $ userPassword ) MAY accountLocked )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.16 NAME 'toxaSvnAccount' DESC 'Subversion account' SUP top AUXILIARY MUST ( uid $ userPassword ) MAY accountLocked )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.1.1.17 NAME 'toxaAccountExtension' DESC 'auxiliary version of toxaAccount to extend existing structural' SUP top AUXILIARY MUST ( uid $ userPassword ) MAY ( o $ cn $ sn $ givenName $ accountLocked $ accountType ) )

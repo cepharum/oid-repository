@@ -1,0 +1,10 @@
+#
+# LDAP schema defining custom object classes for use with INPAS services
+# maintained and distributed by Hör GmbH in cooperation with cepharum GmbH.
+#
+dn: cn=inpas,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: inpas
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.2.2.1 NAME 'inpasCardId' DESC 'numeric ID of card associated with INPAS user' EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+olcAttributeTypes: ( 1.3.6.1.4.1.22606.2.2.2 NAME 'inpasCustomPIN' DESC 'separate PIN - hashed or in clear text - used for authenticating with INPAS services, only' EQUALITY caseExactMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcObjectClasses: ( 1.3.6.1.4.1.22606.2.1.1 NAME 'inpasUser' DESC 'user of INPAS services' SUP top AUXILIARY MAY ( inpasCardId $ inpasCustomPIN ) )
